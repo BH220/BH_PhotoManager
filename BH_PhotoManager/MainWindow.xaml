@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BH_PhotoManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="332" Width="373">
+        Title="MainWindow" Height="442" Width="656">
     <Grid>
+        <Menu x:Name="menu"/>
 
     </Grid>
 </Window>
