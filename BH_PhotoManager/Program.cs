@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +17,29 @@ namespace BH_PhotoManager
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            CheckDirectory();
             Application.Run(new frmMain());
+        }
+
+        private static void CheckDirectory()
+        {
+            string root_path = Application.StartupPath;
+            string root_media = root_path + @"\media";
+            string root_archive = root_media + @"\archive";
+            string root_frame = root_media + @"\frame";
+            string root_print = root_media + @"\print";
+            if (Directory.Exists(root_media) == false)
+            {
+                if (Directory.Exists(root_archive) == false) Directory.CreateDirectory(root_archive);
+                if (Directory.Exists(root_frame) == false) Directory.CreateDirectory(root_frame);
+                if (Directory.Exists(root_print) == false) Directory.CreateDirectory(root_print);
+            }
+            else
+            {
+                if (Directory.Exists(root_archive) == false) Directory.CreateDirectory(root_archive);
+                if (Directory.Exists(root_frame) == false) Directory.CreateDirectory(root_frame);
+                if (Directory.Exists(root_print) == false) Directory.CreateDirectory(root_print);
+            }
         }
     }
 }
