@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35913.81 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoManager", "BH_PhotoManager\BH_PhotoManager.csproj", "{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE741F63-ED2F-4521-833C-5E9C504DE07F}
+	EndGlobalSection
+EndGlobal
