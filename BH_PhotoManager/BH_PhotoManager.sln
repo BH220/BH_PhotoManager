@@ -5,6 +5,18 @@ VisualStudioVersion = 17.13.35913.81 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoManager", "BH_PhotoManager\BH_PhotoManager.csproj", "{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.Files", "0.Files", "{C8D5274F-AC00-46C7-1F8D-E88E81087A52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Core", "1.Core", "{026C1C92-AB78-4A32-915F-E8B489DC0E08}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Data", "2.Data", "{88A8DAC2-5DE5-4423-9285-2C01EA61CA06}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Execure", "3.Execure", "{16C0BFF1-1F85-4775-AE6E-FE8B9E686557}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoManager.Data", "BH_PhotoManager.Data\BH_PhotoManager.Data.csproj", "{FA7467C9-02F7-4BD3-84DE-461ED02CA948}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoManager.Library", "BH_PhotoManager.Library\BH_PhotoManager.Library.csproj", "{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +27,22 @@ Global
 		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA7467C9-02F7-4BD3-84DE-461ED02CA948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA7467C9-02F7-4BD3-84DE-461ED02CA948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA7467C9-02F7-4BD3-84DE-461ED02CA948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA7467C9-02F7-4BD3-84DE-461ED02CA948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783} = {16C0BFF1-1F85-4775-AE6E-FE8B9E686557}
+		{FA7467C9-02F7-4BD3-84DE-461ED02CA948} = {88A8DAC2-5DE5-4423-9285-2C01EA61CA06}
+		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3} = {026C1C92-AB78-4A32-915F-E8B489DC0E08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE741F63-ED2F-4521-833C-5E9C504DE07F}
