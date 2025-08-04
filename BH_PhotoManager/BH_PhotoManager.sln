@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35913.81 d17.13
+VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoManager", "BH_PhotoManager\BH_PhotoManager.csproj", "{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoManager.Data", "BH_PhotoManager.Data\BH_PhotoManager.Data.csproj", "{FA7467C9-02F7-4BD3-84DE-461ED02CA948}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoManager.Library", "BH_PhotoManager.Library\BH_PhotoManager.Library.csproj", "{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoFrameMaker", "BH_PhotoFrameMaker\BH_PhotoFrameMaker.csproj", "{CB9680CC-080A-4B5E-9892-23587A0A2960}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB9680CC-080A-4B5E-9892-23587A0A2960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB9680CC-080A-4B5E-9892-23587A0A2960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB9680CC-080A-4B5E-9892-23587A0A2960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB9680CC-080A-4B5E-9892-23587A0A2960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +49,7 @@ Global
 		{DD7187E8-3571-4C8C-B6B4-4DFC7EE67783} = {16C0BFF1-1F85-4775-AE6E-FE8B9E686557}
 		{FA7467C9-02F7-4BD3-84DE-461ED02CA948} = {88A8DAC2-5DE5-4423-9285-2C01EA61CA06}
 		{07701CCF-4EB2-4EAB-AEBA-CE54163911B3} = {026C1C92-AB78-4A32-915F-E8B489DC0E08}
+		{CB9680CC-080A-4B5E-9892-23587A0A2960} = {16C0BFF1-1F85-4775-AE6E-FE8B9E686557}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE741F63-ED2F-4521-833C-5E9C504DE07F}
