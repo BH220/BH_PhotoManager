@@ -99,7 +99,27 @@ namespace BH_PhonePhotoTool
                                     tfn = tfn.Substring(9, tfn.Length - 9);
                                 }
 
-                                if(tfn.Length>=)
+                                DateTime dt;
+                                // 1. 8자 이상이고 앞 8글자가 숫자인 경우 yyyyMMdd 판별
+                                if (tfn.Length >= 8 && long.TryParse(tfn.Substring(0, 8), out _))
+                                {
+                                    if (DateTime.TryParseExact(tfn.Substring(0, 8), "yyyyMMdd",
+                                        CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+                                    {
+                                        dicPath = $"{dicPathRoot}\\{dt.Year}\\{dt.ToString("yyyyMMdd-yyyyMMdd_")}\\";
+                                    }
+                                    else if (DateTime.TryParseExact(tfn.Substring(0, 6), "yyMMdd",
+                                        CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+                                    {
+                                        dicPath = $"{dicPathRoot}\\{dt.Year}\\{dt.ToString("yyyyMMdd-yyyyMMdd_")}\\";
+                                    }
+                                }
+                                else if (DateTime.TryParseExact(tfn.Substring(0, 6), "yyMMdd",
+                                        CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+                                {
+                                    dicPath = $"{dicPathRoot}\\{dt.Year}\\{dt.ToString("yyyyMMdd-yyyyMMdd_")}\\";
+                                }
+
 
                                 dicPath = $"{dicPathRoot}\\known\\";
                             }
