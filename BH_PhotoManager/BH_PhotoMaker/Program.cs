@@ -216,7 +216,7 @@ namespace BH_PhotoMaker
                             DateTimeStyles.AssumeLocal,
                             out var dt))
                     {
-                        takenDate = dt.ToString("yyyy-MM-dd HH:mm:ss");
+                        takenDate = dt.ToString("yyyy-MM-dd");
                     }
                 }
             }

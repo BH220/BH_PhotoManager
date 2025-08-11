@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoFrame", "BH_PhotoFr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhotoMaker", "BH_PhotoMaker\BH_PhotoMaker.csproj", "{26B6F817-9F95-4736-A83C-F1EAE124B951}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BH_PhonePhotoTool", "BH_PhonePhotoTool\BH_PhonePhotoTool.csproj", "{AA49158D-8FBD-4814-9E42-6899354BC587}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{26B6F817-9F95-4736-A83C-F1EAE124B951}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26B6F817-9F95-4736-A83C-F1EAE124B951}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26B6F817-9F95-4736-A83C-F1EAE124B951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA49158D-8FBD-4814-9E42-6899354BC587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA49158D-8FBD-4814-9E42-6899354BC587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA49158D-8FBD-4814-9E42-6899354BC587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA49158D-8FBD-4814-9E42-6899354BC587}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{CB9680CC-080A-4B5E-9892-23587A0A2960} = {16C0BFF1-1F85-4775-AE6E-FE8B9E686557}
 		{C434DB90-9CD9-4FF3-863E-3D92CA9BBCDA} = {16C0BFF1-1F85-4775-AE6E-FE8B9E686557}
 		{26B6F817-9F95-4736-A83C-F1EAE124B951} = {16C0BFF1-1F85-4775-AE6E-FE8B9E686557}
+		{AA49158D-8FBD-4814-9E42-6899354BC587} = {16C0BFF1-1F85-4775-AE6E-FE8B9E686557}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE741F63-ED2F-4521-833C-5E9C504DE07F}
