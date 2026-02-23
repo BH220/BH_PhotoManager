@@ -11,7 +11,7 @@ namespace BH_PhotoFrameMakerConsole
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern bool SetConsoleCP(uint wCodePageID);
 
-        static void Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
             SetConsoleOutputCP(65001);
             SetConsoleCP(65001);
@@ -23,12 +23,24 @@ namespace BH_PhotoFrameMakerConsole
 
             try
             {
-                Task.Run(() => RemakePhotoManager.Instance.Run());
+                Console.OutputEncoding = new UTF8Encoding(false);
+                Console.InputEncoding = new UTF8Encoding(false);
+
+                await RemakePhotoManager.Instance.Run();
+                return 0;
             }
             catch (Exception ex)
             {
+                Console.WriteLine("치명 오류:");
+                Console.WriteLine("[Critical error]:");
                 Console.WriteLine(ex);
+
+                Console.WriteLine("이 창을 닫으려면 아무키나 누르세요..");
+                Console.WriteLine("[Press any key to close this window..]");
+                Console.ReadKey(true);
+                return 1;
             }
+
         }
 
         private static void CheckFolder()
