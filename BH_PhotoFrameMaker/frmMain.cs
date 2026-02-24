@@ -158,26 +158,17 @@ namespace BH_PhotoFrameMaker
         {
             using (var dialog = new FolderBrowserDialog())
             {
-                dialog.Description = "폴더를 선택하세요.";
+                dialog.Description = "전자 액자용 사진 폴더 경로를 선택하세요";
                 dialog.UseDescriptionForTitle = true;
                 dialog.ShowNewFolderButton = true;
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    bool isOk = false;
                     string selectedPath = dialog.SelectedPath;
-                    string[] dics = Directory.GetDirectories(selectedPath);
-                    foreach (string dic in dics)
-                    {
-                        //바로 하위 폴더의 목록이 년도인게 있는지 체크 0000 ~ 2100 사이 인지 
-
-                    }
-
-                    if (isOk)
-                    {
-
-                        SettingSave();
-                    }
+                    txtOutputPath.Text = selectedPath;
+                    lbOriginPath.Text = selectedPath;
+                    //하위에 origin, remake, fail 폴더 없으면 만들어
+                    SettingSave();
                 }
             }
         }
@@ -206,17 +197,26 @@ namespace BH_PhotoFrameMaker
         {
             using (var dialog = new FolderBrowserDialog())
             {
-                dialog.Description = "폴더를 선택하세요.";
+                dialog.Description = "사진 모음 폴더 루트 경로를 선택하세요";
                 dialog.UseDescriptionForTitle = true;
                 dialog.ShowNewFolderButton = true;
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
+                    bool isOk = false;
                     string selectedPath = dialog.SelectedPath;
+                    string[] dics = Directory.GetDirectories(selectedPath);
+                    foreach (string dic in dics)
+                    {
+                        //바로 하위 폴더의 목록이 년도인게 있는지 체크 0000 ~ 2100 사이 인지 
 
-                    txtOutputPath.Text = selectedPath;
-                    lbOriginPath.Text = selectedPath;
-                    SettingSave();
+                    }
+
+                    if (isOk)
+                    {
+
+                        SettingSave();
+                    }
                 }
             }
         }
