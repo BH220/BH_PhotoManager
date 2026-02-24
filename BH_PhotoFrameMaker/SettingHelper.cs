@@ -11,6 +11,7 @@ namespace BH_PhotoFrameMaker
     public class SettingHelper
     {
         public string RootPath { get; set; }
+        public string PhotoRootPath { get; set; }
         public int ConvertWidth { get; set; }
         public int ConvertHeight { get; set; }
         public bool IsAutoConvert { get; set; }//true면 자동 변환, false면 수동 변환
@@ -52,6 +53,7 @@ namespace BH_PhotoFrameMaker
                 if (data != null)
                 {
                     RootPath = data.RootPath;
+                    PhotoRootPath = data.PhotoRootPath;
                     ConvertWidth = data.ConvertWidth;
                     ConvertHeight = data.ConvertHeight;
                     IsAutoConvert = data.IsAutoConvert;
@@ -71,6 +73,7 @@ namespace BH_PhotoFrameMaker
         {
             SettingData data = new SettingData();
             data.RootPath = RootPath;
+            data.PhotoRootPath = PhotoRootPath;
             data.ConvertWidth = ConvertWidth;
             data.ConvertHeight = ConvertHeight;
             data.IsAutoConvert = IsAutoConvert;
@@ -82,6 +85,7 @@ namespace BH_PhotoFrameMaker
         {
             SettingData data = new SettingData();
             RootPath = data.RootPath;
+            PhotoRootPath = data.PhotoRootPath;
             ConvertWidth = data.ConvertWidth;
             ConvertHeight = data.ConvertHeight;
             IsAutoConvert = data.IsAutoConvert;
@@ -93,6 +97,7 @@ namespace BH_PhotoFrameMaker
     public class SettingData
     {
         public string RootPath { get; set; } = "";
+        public string PhotoRootPath { get; set; } = "";
         public int ConvertWidth { get; set; } = 1920;
         public int ConvertHeight { get; set; } = 1080;
         public bool IsAutoConvert { get; set; } = true;//true면 자동 변환, false면 수동 변환

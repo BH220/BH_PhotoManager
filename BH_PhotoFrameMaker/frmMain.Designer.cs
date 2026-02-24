@@ -67,13 +67,19 @@
             rbAuto = new RadioButton();
             nudHeight = new NumericUpDown();
             nudWidth = new NumericUpDown();
+            btnPhotoPathOpen = new Button();
             btnPathOpen = new Button();
+            btnPhotoPathSetting = new Button();
             btnPathSetting = new Button();
+            label10 = new Label();
+            txtPhotoAllRoot = new TextBox();
             label4 = new Label();
             txtOutputPath = new TextBox();
             label2 = new Label();
             label9 = new Label();
             label1 = new Label();
+            label11 = new Label();
+            label12 = new Label();
             contextMenuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage3.SuspendLayout();
@@ -395,12 +401,18 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(label12);
+            tabPage2.Controls.Add(label11);
             tabPage2.Controls.Add(rbManual);
             tabPage2.Controls.Add(rbAuto);
             tabPage2.Controls.Add(nudHeight);
             tabPage2.Controls.Add(nudWidth);
+            tabPage2.Controls.Add(btnPhotoPathOpen);
             tabPage2.Controls.Add(btnPathOpen);
+            tabPage2.Controls.Add(btnPhotoPathSetting);
             tabPage2.Controls.Add(btnPathSetting);
+            tabPage2.Controls.Add(label10);
+            tabPage2.Controls.Add(txtPhotoAllRoot);
             tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(txtOutputPath);
             tabPage2.Controls.Add(label2);
@@ -417,7 +429,7 @@
             // rbManual
             // 
             rbManual.AutoSize = true;
-            rbManual.Location = new Point(102, 184);
+            rbManual.Location = new Point(102, 307);
             rbManual.Name = "rbManual";
             rbManual.Size = new Size(73, 19);
             rbManual.TabIndex = 11;
@@ -429,7 +441,7 @@
             // 
             rbAuto.AutoSize = true;
             rbAuto.Checked = true;
-            rbAuto.Location = new Point(23, 184);
+            rbAuto.Location = new Point(23, 307);
             rbAuto.Name = "rbAuto";
             rbAuto.Size = new Size(73, 19);
             rbAuto.TabIndex = 11;
@@ -440,7 +452,7 @@
             // 
             // nudHeight
             // 
-            nudHeight.Location = new Point(99, 103);
+            nudHeight.Location = new Point(99, 226);
             nudHeight.Maximum = new decimal(new int[] { 2160, 0, 0, 0 });
             nudHeight.Minimum = new decimal(new int[] { 480, 0, 0, 0 });
             nudHeight.Name = "nudHeight";
@@ -452,7 +464,7 @@
             // 
             // nudWidth
             // 
-            nudWidth.Location = new Point(23, 103);
+            nudWidth.Location = new Point(23, 226);
             nudWidth.Maximum = new decimal(new int[] { 3840, 0, 0, 0 });
             nudWidth.Minimum = new decimal(new int[] { 720, 0, 0, 0 });
             nudWidth.Name = "nudWidth";
@@ -461,6 +473,17 @@
             nudWidth.TextAlign = HorizontalAlignment.Center;
             nudWidth.Value = new decimal(new int[] { 1920, 0, 0, 0 });
             nudWidth.ValueChanged += WidthHeight_ValueChanged;
+            // 
+            // btnPhotoPathOpen
+            // 
+            btnPhotoPathOpen.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnPhotoPathOpen.Location = new Point(23, 125);
+            btnPhotoPathOpen.Name = "btnPhotoPathOpen";
+            btnPhotoPathOpen.Size = new Size(49, 23);
+            btnPhotoPathOpen.TabIndex = 9;
+            btnPhotoPathOpen.Text = "열기";
+            btnPhotoPathOpen.UseVisualStyleBackColor = true;
+            btnPhotoPathOpen.Click += btnPhotoPathOpen_Click;
             // 
             // btnPathOpen
             // 
@@ -473,6 +496,17 @@
             btnPathOpen.UseVisualStyleBackColor = true;
             btnPathOpen.Click += btnPathOpen_Click;
             // 
+            // btnPhotoPathSetting
+            // 
+            btnPhotoPathSetting.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnPhotoPathSetting.Location = new Point(78, 125);
+            btnPhotoPathSetting.Name = "btnPhotoPathSetting";
+            btnPhotoPathSetting.Size = new Size(49, 23);
+            btnPhotoPathSetting.TabIndex = 8;
+            btnPhotoPathSetting.Text = "설정";
+            btnPhotoPathSetting.UseVisualStyleBackColor = true;
+            btnPhotoPathSetting.Click += btnPhotoPathSetting_Click;
+            // 
             // btnPathSetting
             // 
             btnPathSetting.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -483,6 +517,24 @@
             btnPathSetting.Text = "설정";
             btnPathSetting.UseVisualStyleBackColor = true;
             btnPathSetting.Click += btnPathSetting_Click;
+            // 
+            // label10
+            // 
+            label10.Location = new Point(6, 99);
+            label10.Name = "label10";
+            label10.Size = new Size(474, 23);
+            label10.TabIndex = 7;
+            label10.Text = "■ 사진 모음 폴더 루트 경로 ( 년도별 구분 폴더 바로 상위 폴더로 지정 필요 )";
+            label10.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // txtPhotoAllRoot
+            // 
+            txtPhotoAllRoot.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtPhotoAllRoot.Location = new Point(133, 125);
+            txtPhotoAllRoot.Name = "txtPhotoAllRoot";
+            txtPhotoAllRoot.ReadOnly = true;
+            txtPhotoAllRoot.Size = new Size(347, 23);
+            txtPhotoAllRoot.TabIndex = 6;
             // 
             // label4
             // 
@@ -505,7 +557,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(80, 105);
+            label2.Location = new Point(80, 228);
             label2.Name = "label2";
             label2.Size = new Size(13, 15);
             label2.TabIndex = 4;
@@ -514,7 +566,7 @@
             // 
             // label9
             // 
-            label9.Location = new Point(6, 158);
+            label9.Location = new Point(6, 281);
             label9.Name = "label9";
             label9.Size = new Size(379, 23);
             label9.TabIndex = 2;
@@ -523,12 +575,32 @@
             // 
             // label1
             // 
-            label1.Location = new Point(6, 77);
+            label1.Location = new Point(6, 200);
             label1.Name = "label1";
             label1.Size = new Size(100, 23);
             label1.TabIndex = 2;
             label1.Text = "■ 기준 해상도";
             label1.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(23, 55);
+            label11.Name = "label11";
+            label11.Size = new Size(360, 15);
+            label11.TabIndex = 12;
+            label11.Text = "EX) G:\\사진모음ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ";
+            label11.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(25, 151);
+            label12.Name = "label12";
+            label12.Size = new Size(360, 15);
+            label12.TabIndex = 12;
+            label12.Text = "EX) G:\\사진모음ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ";
+            label12.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // frmMain
             // 
@@ -601,5 +673,11 @@
         private Button btnItemDelete;
         private Button btnItemDeleteAll;
         private Button button1;
+        private Button btnPhotoPathOpen;
+        private Button btnPhotoPathSetting;
+        private Label label10;
+        private TextBox txtPhotoAllRoot;
+        private Label label12;
+        private Label label11;
     }
 }
