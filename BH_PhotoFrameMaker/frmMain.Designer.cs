@@ -63,6 +63,8 @@
             label6 = new Label();
             txtTotal = new TextBox();
             tabPage2 = new TabPage();
+            label12 = new Label();
+            label11 = new Label();
             rbManual = new RadioButton();
             rbAuto = new RadioButton();
             nudHeight = new NumericUpDown();
@@ -78,8 +80,6 @@
             label2 = new Label();
             label9 = new Label();
             label1 = new Label();
-            label11 = new Label();
-            label12 = new Label();
             contextMenuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage3.SuspendLayout();
@@ -426,6 +426,26 @@
             tabPage2.Text = "설정";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(133, 151);
+            label12.Name = "label12";
+            label12.Size = new Size(143, 15);
+            label12.TabIndex = 12;
+            label12.Text = "EX) G:\\사진\\1. 사진모음";
+            label12.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(133, 55);
+            label11.Name = "label11";
+            label11.Size = new Size(203, 15);
+            label11.TabIndex = 12;
+            label11.Text = "EX) G:\\사진\\3. 전자 액자 전용 사진";
+            label11.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // rbManual
             // 
             rbManual.AutoSize = true;
@@ -581,26 +601,6 @@
             label1.TabIndex = 2;
             label1.Text = "■ 기준 해상도";
             label1.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Location = new Point(23, 55);
-            label11.Name = "label11";
-            label11.Size = new Size(360, 15);
-            label11.TabIndex = 12;
-            label11.Text = "EX) G:\\사진모음ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ";
-            label11.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(25, 151);
-            label12.Name = "label12";
-            label12.Size = new Size(360, 15);
-            label12.TabIndex = 12;
-            label12.Text = "EX) G:\\사진모음ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ";
-            label12.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // frmMain
             // 

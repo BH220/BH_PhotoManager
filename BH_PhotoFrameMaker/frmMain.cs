@@ -1,4 +1,3 @@
-
 using BH_WaitingPopupWinform;
 using ImageMagick;
 using System.Diagnostics;
@@ -17,6 +16,7 @@ namespace BH_PhotoFrameMaker
         {
             InitializeComponent();
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -29,7 +29,6 @@ namespace BH_PhotoFrameMaker
             PathCheck();
         }
 
-
         #region 액자용으로 변환 복사 관련
         private void btnItemDelete_Click(object sender, EventArgs e)
         {
@@ -38,6 +37,7 @@ namespace BH_PhotoFrameMaker
                 lstTarget.Items.Remove(lstTarget.SelectedItems[0]);
             }
         }
+
         private async void btnConvertCopy_Click(object sender, EventArgs e)
         {
             WaitingPopupManager.ShowForm(this, "변환 중입니다.", "잠시만 기다려주세요.");
@@ -49,26 +49,37 @@ namespace BH_PhotoFrameMaker
 
                 for (int idx = lstTarget.Items.Count - 1; idx >= 0; idx--)
                 {
-                    CopyToOrigin(lstTarget.Items[idx].ToString());
-                    lstTarget.Invoke(() =>
+                    bool result = CopyToOrigin(lstTarget.Items[idx].ToString());
+                    if (result)
                     {
-                        lstTarget.Items.RemoveAt(idx);
-                    });
+                        lstTarget.Invoke(() =>
+                        {
+                            lstTarget.Items.RemoveAt(idx);
+                        });
+                    }
                 }
             });
             WaitingPopupManager.CloseForm();
         }
 
-        private void CopyToOrigin(string path)
+        private bool CopyToOrigin(string path)
         {
+            bool result = false;
             try
             {
-
+                string ymd = $"20{path.Replace(SettingHelper.Instance.PhotoRootPath, "").Substring(6, 6)}";
+                string newFile = $"{SettingHelper.Instance.RootPath}\\origin\\{ymd.Substring(0,4)}-{ymd.Substring(4, 2)}-{ymd.Substring(6, 2)}_{Path.GetFileName(path)}";
+                if (File.Exists(newFile) == false)
+                {
+                    File.Copy(path, newFile);
+                }
+                result = true;
             }
             catch (Exception ex)
             {
 
             }
+            return result;
         }
 
         private void lbOriginPath_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -91,14 +102,12 @@ namespace BH_PhotoFrameMaker
             }
         }
 
-        private void lstTarget_DragDrop(object sender, DragEventArgs e)
+        private async void lstTarget_DragDrop(object sender, DragEventArgs e)
         {
             if (e.Data == null || !e.Data.GetDataPresent(DataFormats.FileDrop))
                 return;
 
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-
 
             foreach (var file in files)
             {
@@ -115,7 +124,14 @@ namespace BH_PhotoFrameMaker
                     }
                 }
             }
+            if (SettingHelper.Instance.IsAutoConvert && lstTarget.Items.Count > 0)
+            {
+                Application.DoEvents();
+                await Task.Delay(200);
+                btnConvertCopy_Click(null, null);
+            }
         }
+
         private void btnItemDeleteAll_Click(object sender, EventArgs e)
         {
             while (lstTarget.Items.Count > 0)
@@ -158,7 +174,7 @@ namespace BH_PhotoFrameMaker
         {
             using (var dialog = new FolderBrowserDialog())
             {
-                dialog.Description = "전자 액자용 사진 폴더 경로를 선택하세요";
+                dialog.Description = "전자 액자용 사진 폴더 경로를 선택하세요 [ EX) G:\\사진\\3. 전자 액자 전용 사진 ]";
                 dialog.UseDescriptionForTitle = true;
                 dialog.ShowNewFolderButton = true;
 
@@ -197,7 +213,7 @@ namespace BH_PhotoFrameMaker
         {
             using (var dialog = new FolderBrowserDialog())
             {
-                dialog.Description = "사진 모음 폴더 루트 경로를 선택하세요";
+                dialog.Description = "사진 모음 폴더 루트 경로를 선택하세요 [ EX) G:\\사진\\1. 사진모음 ]";
                 dialog.UseDescriptionForTitle = true;
                 dialog.ShowNewFolderButton = true;
 
@@ -208,13 +224,17 @@ namespace BH_PhotoFrameMaker
                     string[] dics = Directory.GetDirectories(selectedPath);
                     foreach (string dic in dics)
                     {
-                        //바로 하위 폴더의 목록이 년도인게 있는지 체크 0000 ~ 2100 사이 인지 
-
+                        string d = Path.GetFileName(dic);
+                        if (!string.IsNullOrWhiteSpace(d) && d.Length == 4 && int.TryParse(d, out int number) && number >= 2000 && number <= 2100)
+                        {
+                            isOk = true;
+                            break;
+                        }
                     }
 
                     if (isOk)
                     {
-
+                        txtPhotoAllRoot.Text = selectedPath;
                         SettingSave();
                     }
                 }
@@ -236,6 +256,7 @@ namespace BH_PhotoFrameMaker
                 PathCheck();
             }
         }
+
         private void PathCheck()
         {
             if (string.IsNullOrEmpty(SettingHelper.Instance.RootPath))
@@ -264,8 +285,6 @@ namespace BH_PhotoFrameMaker
                 rbManual.Checked = true;
             lbOriginPath.Text = SettingHelper.Instance.RootPath;
         }
-
         #endregion
-
     }
 }
