@@ -11,6 +11,11 @@
   <ItemGroup>
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.10.2" />
     <PackageReference Include="Magick.NET.Core" Version="14.10.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\WaitingPopupWinform\BH_WaitingPopupWinform\BH_WaitingPopupWinform.csproj" />
   </ItemGroup>
 
 </Project>
