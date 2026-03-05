@@ -50,6 +50,17 @@
             label8 = new Label();
             label3 = new Label();
             tabPage1 = new TabPage();
+            groupBox2 = new GroupBox();
+            rbBottom = new RadioButton();
+            rbLeft = new RadioButton();
+            rbRight = new RadioButton();
+            chkAutoRotate = new CheckBox();
+            btnRotate = new Button();
+            label14 = new Label();
+            picLeft = new PictureBox();
+            picDown = new PictureBox();
+            picRight = new PictureBox();
+            listRotate = new ListBox();
             btnCheck = new Button();
             btnReset = new Button();
             btnStart = new Button();
@@ -85,6 +96,10 @@
             groupBox1.SuspendLayout();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picLeft).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picDown).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picRight).BeginInit();
             tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudHeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudWidth).BeginInit();
@@ -139,7 +154,7 @@
             tabControl1.Location = new Point(5, 5);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(494, 391);
+            tabControl1.Size = new Size(494, 451);
             tabControl1.TabIndex = 10;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
@@ -150,7 +165,7 @@
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(486, 363);
+            tabPage3.Size = new Size(486, 423);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "1. 전자액자용 이미지 모으기";
             tabPage3.UseVisualStyleBackColor = true;
@@ -161,7 +176,7 @@
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(480, 257);
+            groupBox1.Size = new Size(480, 317);
             groupBox1.TabIndex = 9;
             groupBox1.TabStop = false;
             groupBox1.Text = " 변환 대상 파일을 드래그 앤 드랍하여 추가 ";
@@ -175,7 +190,7 @@
             lstTarget.Location = new Point(3, 19);
             lstTarget.Name = "lstTarget";
             lstTarget.SelectionMode = SelectionMode.MultiExtended;
-            lstTarget.Size = new Size(474, 235);
+            lstTarget.Size = new Size(474, 295);
             lstTarget.TabIndex = 7;
             lstTarget.DragDrop += lstTarget_DragDrop;
             lstTarget.DragEnter += lstTarget_DragEnter;
@@ -190,7 +205,7 @@
             panel1.Controls.Add(label8);
             panel1.Controls.Add(label3);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(3, 260);
+            panel1.Location = new Point(3, 320);
             panel1.Name = "panel1";
             panel1.Size = new Size(480, 100);
             panel1.TabIndex = 12;
@@ -266,6 +281,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(groupBox2);
             tabPage1.Controls.Add(btnCheck);
             tabPage1.Controls.Add(btnReset);
             tabPage1.Controls.Add(btnStart);
@@ -280,10 +296,146 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(486, 363);
+            tabPage1.Size = new Size(486, 423);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "2. 액자용으로 컨버팅";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Controls.Add(rbBottom);
+            groupBox2.Controls.Add(rbLeft);
+            groupBox2.Controls.Add(rbRight);
+            groupBox2.Controls.Add(chkAutoRotate);
+            groupBox2.Controls.Add(btnRotate);
+            groupBox2.Controls.Add(label14);
+            groupBox2.Controls.Add(picLeft);
+            groupBox2.Controls.Add(picDown);
+            groupBox2.Controls.Add(picRight);
+            groupBox2.Controls.Add(listRotate);
+            groupBox2.Location = new Point(6, 175);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(474, 242);
+            groupBox2.TabIndex = 22;
+            groupBox2.TabStop = false;
+            groupBox2.Text = " 회전 변환 대상 파일을 드래그 앤 드랍하여 추가 (전환된 사진만 회전 시킵니다)";
+            // 
+            // rbBottom
+            // 
+            rbBottom.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            rbBottom.AutoSize = true;
+            rbBottom.Location = new Point(93, 197);
+            rbBottom.Name = "rbBottom";
+            rbBottom.Size = new Size(14, 13);
+            rbBottom.TabIndex = 2;
+            rbBottom.TabStop = true;
+            rbBottom.UseVisualStyleBackColor = true;
+            // 
+            // rbLeft
+            // 
+            rbLeft.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            rbLeft.AutoSize = true;
+            rbLeft.Location = new Point(11, 197);
+            rbLeft.Name = "rbLeft";
+            rbLeft.Size = new Size(14, 13);
+            rbLeft.TabIndex = 2;
+            rbLeft.TabStop = true;
+            rbLeft.UseVisualStyleBackColor = true;
+            // 
+            // rbRight
+            // 
+            rbRight.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            rbRight.AutoSize = true;
+            rbRight.Location = new Point(181, 197);
+            rbRight.Name = "rbRight";
+            rbRight.Size = new Size(14, 13);
+            rbRight.TabIndex = 2;
+            rbRight.TabStop = true;
+            rbRight.UseVisualStyleBackColor = true;
+            // 
+            // chkAutoRotate
+            // 
+            chkAutoRotate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            chkAutoRotate.AutoSize = true;
+            chkAutoRotate.Checked = true;
+            chkAutoRotate.CheckState = CheckState.Checked;
+            chkAutoRotate.Location = new Point(289, 212);
+            chkAutoRotate.Name = "chkAutoRotate";
+            chkAutoRotate.Size = new Size(174, 19);
+            chkAutoRotate.TabIndex = 6;
+            chkAutoRotate.Text = "드래그 앤 드랍시 자동 변환";
+            chkAutoRotate.UseVisualStyleBackColor = true;
+            // 
+            // btnRotate
+            // 
+            btnRotate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnRotate.Location = new Point(289, 178);
+            btnRotate.Name = "btnRotate";
+            btnRotate.Size = new Size(89, 32);
+            btnRotate.TabIndex = 5;
+            btnRotate.Text = "회전";
+            btnRotate.UseVisualStyleBackColor = true;
+            btnRotate.Click += btnRotate_Click;
+            // 
+            // label14
+            // 
+            label14.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label14.AutoSize = true;
+            label14.Location = new Point(6, 160);
+            label14.Name = "label14";
+            label14.Size = new Size(87, 15);
+            label14.TabIndex = 4;
+            label14.Text = "현재 회전 상태";
+            // 
+            // picLeft
+            // 
+            picLeft.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            picLeft.Image = (Image)resources.GetObject("picLeft.Image");
+            picLeft.Location = new Point(19, 179);
+            picLeft.Name = "picLeft";
+            picLeft.Size = new Size(48, 48);
+            picLeft.SizeMode = PictureBoxSizeMode.AutoSize;
+            picLeft.TabIndex = 3;
+            picLeft.TabStop = false;
+            picLeft.Click += picLeft_Click;
+            // 
+            // picDown
+            // 
+            picDown.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            picDown.Image = (Image)resources.GetObject("picDown.Image");
+            picDown.Location = new Point(108, 183);
+            picDown.Name = "picDown";
+            picDown.Size = new Size(48, 48);
+            picDown.SizeMode = PictureBoxSizeMode.AutoSize;
+            picDown.TabIndex = 3;
+            picDown.TabStop = false;
+            picDown.Click += picDown_Click;
+            // 
+            // picRight
+            // 
+            picRight.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            picRight.Image = (Image)resources.GetObject("picRight.Image");
+            picRight.Location = new Point(198, 179);
+            picRight.Name = "picRight";
+            picRight.Size = new Size(48, 48);
+            picRight.SizeMode = PictureBoxSizeMode.AutoSize;
+            picRight.TabIndex = 3;
+            picRight.TabStop = false;
+            picRight.Click += picRight_Click;
+            // 
+            // listRotate
+            // 
+            listRotate.AllowDrop = true;
+            listRotate.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            listRotate.FormattingEnabled = true;
+            listRotate.ItemHeight = 15;
+            listRotate.Location = new Point(6, 22);
+            listRotate.Name = "listRotate";
+            listRotate.Size = new Size(462, 124);
+            listRotate.TabIndex = 0;
+            listRotate.DragDrop += listBox1_DragDrop;
+            listRotate.DragEnter += listBox1_DragEnter;
             // 
             // btnCheck
             // 
@@ -409,7 +561,7 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(486, 363);
+            tabPage2.Size = new Size(486, 423);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "설정";
             tabPage2.UseVisualStyleBackColor = true;
@@ -594,10 +746,10 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(504, 401);
+            ClientSize = new Size(504, 461);
             Controls.Add(tabControl1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(520, 440);
+            MinimumSize = new Size(520, 500);
             Name = "frmMain";
             Padding = new Padding(5);
             Text = "이미지 변환";
@@ -609,6 +761,11 @@
             panel1.PerformLayout();
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picLeft).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picDown).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picRight).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudHeight).EndInit();
@@ -666,5 +823,16 @@
         private TextBox txtPhotoAllRoot;
         private Label label12;
         private Label label11;
+        private GroupBox groupBox2;
+        private ListBox listRotate;
+        private RadioButton rbRight;
+        private Label label14;
+        private PictureBox picLeft;
+        private PictureBox picDown;
+        private RadioButton rbBottom;
+        private PictureBox picRight;
+        private RadioButton rbLeft;
+        private CheckBox chkAutoRotate;
+        private Button btnRotate;
     }
 }

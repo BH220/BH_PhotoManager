@@ -1,14 +1,15 @@
+using BH_WaitingPopupWinform; 
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using SixLabors.ImageSharp.Processing;
-using BH_WaitingPopupWinform; 
 using System.Diagnostics;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Image = SixLabors.ImageSharp.Image;
-using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace BH_PhotoFrameMaker
 {
@@ -118,7 +119,7 @@ namespace BH_PhotoFrameMaker
             try
             {
                 string ymd = $"20{path.Replace(SettingHelper.Instance.PhotoRootPath, "").Substring(6, 6)}";
-                string newFile = $"{SettingHelper.Instance.RootPath}\\origin\\{ymd.Substring(0,4)}-{ymd.Substring(4, 2)}-{ymd.Substring(6, 2)}_{Path.GetFileName(path)}";
+                string newFile = $"{SettingHelper.Instance.RootPath}\\origin\\{ymd.Substring(0, 4)}-{ymd.Substring(4, 2)}-{ymd.Substring(6, 2)}_{Path.GetFileName(path)}";
                 if (File.Exists(newFile) == false)
                 {
                     File.Copy(path, newFile);
@@ -220,6 +221,7 @@ namespace BH_PhotoFrameMaker
             btnCheck_Click(null, null);
             btnCheck.Enabled =
             btnReset.Enabled =
+            groupBox2.Enabled =
             btnStart.Enabled = false;
             try
             {
@@ -236,11 +238,12 @@ namespace BH_PhotoFrameMaker
             {
                 btnCheck.Enabled =
                 btnReset.Enabled =
+                groupBox2.Enabled =
                 btnStart.Enabled = true;
             }
         }
 
-        private void ConvertFile(List<string> files)
+        private void ConvertFile(List<string> files, bool updateUi = true)
         {
             int cnt_success = 0;
             int cnt_fail = 0;
@@ -267,7 +270,6 @@ namespace BH_PhotoFrameMaker
 
                     if (File.Exists(convert))
                     {
-                        MoveFile(file, pathDuplication, fileName, ext);
                         cnt_success++;
                         continue;
                     }
@@ -301,7 +303,8 @@ namespace BH_PhotoFrameMaker
                 }
                 finally
                 {
-                    UpdateUI(cnt_success, cnt_fail, total);
+                    if(updateUi)
+                        UpdateUI(cnt_success, cnt_fail, total);
                 }
             }
         }
@@ -371,6 +374,141 @@ namespace BH_PhotoFrameMaker
                 .Where(x => imageExtensions.Contains(Path.GetExtension(x)))
                 .ToList();
         }
+
+        private void picLeft_Click(object sender, EventArgs e)
+        {
+            rbLeft.Checked = true;
+        }
+
+        private void picDown_Click(object sender, EventArgs e)
+        {
+            rbBottom.Checked = true;
+        }
+
+        private void picRight_Click(object sender, EventArgs e)
+        {
+            rbRight.Checked = true;
+        }
+
+        private void listBox1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data == null || !e.Data.GetDataPresent(DataFormats.FileDrop))
+                return;
+
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (var file in files)
+            {
+                if (File.Exists(file))
+                {
+                    string extension = Path.GetExtension(file).ToLower();
+
+                    if (imageExtensions.Contains(extension))
+                    {
+                        if (!listRotate.Items.Contains(file)) // 중복 방지
+                        {
+                            listRotate.Items.Add(file);
+                        }
+                    }
+                }
+            }
+            if (chkAutoRotate.Checked && listRotate.Items.Count > 0)
+            {
+                btnRotate_Click(null, null);
+            }
+        }
+
+        private void listBox1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data != null && e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private async void btnRotate_Click(object sender, EventArgs e)
+        {
+            if (rbLeft.Checked || rbRight.Checked || rbBottom.Checked)
+            {
+                Application.DoEvents();
+                await Task.Delay(200);
+                WaitingPopupManager.ShowForm(this, "변환 중입니다.", "잠시만 기다려주세요.");
+                await Task.Run(() =>
+                {
+                    List<string> originNames = Directory.GetFiles(pathOrigin).Select(x => Path.GetFileName(x)).ToList();
+                    for (int idx = listRotate.Items.Count - 1; idx >= 0; idx--)
+                    {
+                        bool result = ImageRotate(originNames, listRotate.Items[idx].ToString(), rbLeft.Checked ? RotateMode.Rotate270 : rbRight.Checked ? RotateMode.Rotate90 : RotateMode.Rotate180);
+                        if (result)
+                        {
+                            listRotate.Invoke(() =>
+                            {
+                                listRotate.Items.RemoveAt(idx);
+                            });
+                        }
+                    }
+                });
+                WaitingPopupManager.CloseForm();
+            }
+            else
+            {
+                MessageBox.Show("회전 방향을 선택하세요.", "회전 방향 미선택", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+        }
+
+        private bool ImageRotate(List<string> originList, string convetedFile, RotateMode rotateMode)
+        {
+            bool result = false;
+            try
+            {
+                if(rotateMode == RotateMode.Rotate90)
+                    rotateMode = RotateMode.Rotate270;
+                else if (rotateMode == RotateMode.Rotate180)
+                    rotateMode = RotateMode.Rotate180;
+                else if (rotateMode == RotateMode.Rotate270)
+                    rotateMode = RotateMode.Rotate90;
+                string convetedFileTemp = convetedFile + "_temp";
+                string convertedFileName = Path.GetFileNameWithoutExtension(convetedFile).Replace("_convert","");
+                string originFile = originList.First(x => x.StartsWith(convertedFileName));
+                File.Move(convetedFile, convetedFileTemp);
+                string originFullPath = Path.Combine(pathOrigin, originFile);
+                string tempFile = originFullPath + ".tmp" + Path.GetExtension(originFullPath);
+                
+                using (Image image = Image.Load(originFullPath))
+                {
+                    image.Mutate(x =>
+                    {
+                        x.Rotate(rotateMode);
+                    });
+
+                    var exif = image.Metadata.ExifProfile;
+                    if (exif != null)
+                    {
+                        exif.SetValue(ExifTag.Orientation, (ushort)1);
+                    }
+
+                    image.Save(tempFile);
+                }
+
+                File.Delete(originFullPath);
+                File.Move(tempFile, originFullPath);
+
+                ConvertFile(new List<string>() { originFullPath }, false);
+                File.Delete(convetedFileTemp);
+                result = true;
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return result;
+        }
+
         #endregion
 
         #region 설정 관련
@@ -471,12 +609,12 @@ namespace BH_PhotoFrameMaker
         #region 공통
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(btnStart.Enabled == false)
+            if (btnStart.Enabled == false)
             {
                 tabControl1.SelectedTab = tabPage1;
                 tabControl1.Focus();
                 return;
-            }    
+            }
             if (tabControl1.SelectedTab != tabPage2)
             {
                 PathCheck();
@@ -507,10 +645,11 @@ namespace BH_PhotoFrameMaker
             nudWidth.Value = SettingHelper.Instance.ConvertWidth;
             if (SettingHelper.Instance.IsAutoConvert)
                 rbAuto.Checked = true;
-            else 
+            else
                 rbManual.Checked = true;
             lbOriginPath.Text = SettingHelper.Instance.RootPath;
         }
         #endregion
+
     }
 }
