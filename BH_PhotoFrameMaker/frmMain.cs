@@ -1,17 +1,66 @@
-
-using BH_WaitingPopupWinform;
-using ImageMagick;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
+using BH_WaitingPopupWinform; 
 using System.Diagnostics;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using Image = SixLabors.ImageSharp.Image;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace BH_PhotoFrameMaker
 {
     public partial class frmMain : Form
     {
         CancellationTokenSource cts = null;
-        string[] allowedExtensions = { ".png", ".jpg", ".jpeg", ".gif" };
+        private readonly HashSet<string> imageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ".jpg",".jpeg",".png",".gif",".bmp",".tif",".tiff"
+        };
+        List<string> lstConvertTarget = new List<string>();
+        List<string> lstFailTarget = new List<string>();
+
+        private string pathOrigin
+        {
+            get
+            {
+                string path = Path.Combine(SettingHelper.Instance.RootPath, "origin");
+                if (Directory.Exists(path) == false)
+                    Directory.CreateDirectory(path);
+                return path;
+            }
+        }
+        private string pathFail
+        {
+            get
+            {
+                string path = Path.Combine(SettingHelper.Instance.RootPath, "fail");
+                if (Directory.Exists(path) == false)
+                    Directory.CreateDirectory(path);
+                return path;
+            }
+        }
+        private string pathConvert
+        {
+            get
+            {
+                string path = Path.Combine(SettingHelper.Instance.RootPath, "convert");
+                if (Directory.Exists(path) == false)
+                    Directory.CreateDirectory(path);
+                return path;
+            }
+        }
+        private string pathDuplication
+        {
+            get
+            {
+                string path = Path.Combine(SettingHelper.Instance.RootPath, "duplication");
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                return path;
+            }
+        }
 
         public frmMain()
         {
@@ -106,7 +155,7 @@ namespace BH_PhotoFrameMaker
                 {
                     string extension = Path.GetExtension(file).ToLower();
 
-                    if (allowedExtensions.Contains(extension))
+                    if (imageExtensions.Contains(extension))
                     {
                         if (!lstTarget.Items.Contains(file)) // 중복 방지
                         {
@@ -126,24 +175,184 @@ namespace BH_PhotoFrameMaker
         #endregion
 
         #region 액자용으로 컨버팅 관련
-        private void btnCheck_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnReset_Click(object sender, EventArgs e)
         {
+            List<Control> controls = new List<Control>() {
+                txtTotal,
+                txtSuccess,
+                txtFail
+            };
 
+            foreach (var control in controls)
+            {
+                control.Text = "";
+            }
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private void btnCheck_Click(object sender, EventArgs e)
         {
-
+            lstConvertTarget = new List<string>();
+            lstFailTarget = new List<string>();
+            lstConvertTarget.AddRange(Directory.GetFiles(pathOrigin).ToList());
+            lstFailTarget.AddRange(Directory.GetFiles(pathFail).ToList());
+            txtTotal.Text = (lstConvertTarget.Count + lstFailTarget.Count).ToString("#,0");
         }
 
-        private void btnResult_Click(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
+            btnCheck_Click(null, null);
+            btnCheck.Enabled =
+            btnReset.Enabled =
+            btnStart.Enabled = false;
+            try
+            {
+                List<string> lstTarget = GetImageFiles(pathFail);
+                List<string> originFiles = GetImageFiles(pathOrigin);
+                lstTarget.AddRange(originFiles);
 
+                int total = lstTarget.Count;
+
+                InitUI(total);
+                await Task.Run(() => ConvertFile(lstTarget));
+            }
+            finally
+            {
+                btnCheck.Enabled =
+                btnReset.Enabled =
+                btnStart.Enabled = true;
+            }
+        }
+
+        private void ConvertFile(List<string> files)
+        {
+            int cnt_success = 0;
+            int cnt_fail = 0;
+
+            string fileName = "";
+            string ext = "";
+            string convert = "";
+            int total = files.Count;
+
+            JpegEncoder jpegEncoder = new JpegEncoder
+            {
+                Quality = 75,
+                ColorType = JpegEncodingColor.YCbCrRatio420
+            };
+
+            foreach (string file in files)
+            {
+                try
+                {
+                    fileName = Path.GetFileNameWithoutExtension(file);
+                    ext = Path.GetExtension(file);
+
+                    convert = Path.Combine(pathConvert, $"{fileName}_convert.jpg");
+
+                    if (File.Exists(convert))
+                    {
+                        MoveFile(file, pathDuplication, fileName, ext);
+                        cnt_success++;
+                        continue;
+                    }
+
+                    using (Image image = Image.Load(file))
+                    {
+                        image.Mutate(x =>
+                        {
+                            x.AutoOrient();
+
+                            double ratioX = (double)SettingHelper.Instance.ConvertWidth / image.Width;
+                            double ratioY = (double)SettingHelper.Instance.ConvertHeight / image.Height;
+                            double ratio = Math.Min(ratioX, ratioY);
+
+                            int newWidth = (int)(image.Width * ratio);
+                            int newHeight = (int)(image.Height * ratio);
+
+                            x.Resize(newWidth, newHeight, KnownResamplers.Bicubic);
+                        });
+
+                        image.Metadata.ExifProfile = null;
+
+                        image.Save(convert, jpegEncoder);
+                    }
+                    cnt_success++;
+                }
+                catch
+                {
+                    MoveFile(file, pathFail, fileName, ext);
+                    cnt_fail++;
+                }
+                finally
+                {
+                    UpdateUI(cnt_success, cnt_fail, total);
+                }
+            }
+        }
+
+        private void UpdateUI(int cnt_success, int cnt_fail, int total)
+        {
+            string success = cnt_success.ToString("#,0");
+            if (txtSuccess.Text != success)
+            {
+                txtSuccess.Invoke(() =>
+                {
+                    txtSuccess.Text = success;
+                });
+            }
+            string fail = cnt_fail.ToString("#,0");
+            if (txtFail.Text != fail)
+            {
+                txtFail.Invoke(() =>
+                {
+                    txtFail.Text = fail;
+                });
+            }
+            int process = (int)(((double)(cnt_success + cnt_fail) / (double)total) * (double)100);
+            if (progressBar1.Value != process)
+            {
+                progressBar1.Invoke(() =>
+                {
+                    progressBar1.Value = cnt_success + cnt_fail;
+                });
+                lbPercent.Invoke(() =>
+                {
+                    lbPercent.Text = $"진행률 ({process}%)";
+                });
+            }
+        }
+
+        private void MoveFile(string fullPath, string path, string name, string ext)
+        {
+            string df = Path.Combine(path, name);
+            int idx = 0;
+            while (true)
+            {
+                var nf = Path.Combine(df, string.Join("_", idx++), ext);
+                if (File.Exists(nf) == false)
+                {
+                    File.Move(fullPath, nf);
+                    break;
+                }
+            }
+        }
+
+        private void InitUI(int total)
+        {
+            Invoke(() =>
+            {
+                txtSuccess.Text = "0";
+                txtFail.Text = "0";
+
+                progressBar1.Value = 0;
+                progressBar1.Maximum = total;
+            });
+        }
+
+        private List<string> GetImageFiles(string path)
+        {
+            return Directory.EnumerateFiles(path)
+                .Where(x => imageExtensions.Contains(Path.GetExtension(x)))
+                .ToList();
         }
         #endregion
 
@@ -167,7 +376,17 @@ namespace BH_PhotoFrameMaker
                     string selectedPath = dialog.SelectedPath;
                     txtOutputPath.Text = selectedPath;
                     lbOriginPath.Text = selectedPath;
-                    //하위에 origin, remake, fail 폴더 없으면 만들어
+                    //하위에 origin, convert, fail 폴더 없으면 만들어
+                    List<string> lstDic = new List<string>();
+                    lstDic.Add(Path.Combine(selectedPath, "origin"));
+                    lstDic.Add(Path.Combine(selectedPath, "fail"));
+                    lstDic.Add(Path.Combine(selectedPath, "convert"));
+                    lstDic.Add(Path.Combine(selectedPath, "duplication"));
+                    lstDic.ForEach(dic =>
+                    {
+                        if (Directory.Exists(dic) == false)
+                            Directory.CreateDirectory(dic);
+                    });
                     SettingSave();
                 }
             }
@@ -214,7 +433,7 @@ namespace BH_PhotoFrameMaker
 
                     if (isOk)
                     {
-
+                        txtPhotoAllRoot.Text = selectedPath;
                         SettingSave();
                     }
                 }
@@ -231,6 +450,12 @@ namespace BH_PhotoFrameMaker
         #region 공통
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(btnStart.Enabled == false)
+            {
+                tabControl1.SelectedTab = tabPage1;
+                tabControl1.Focus();
+                return;
+            }    
             if (tabControl1.SelectedTab != tabPage2)
             {
                 PathCheck();

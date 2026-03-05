@@ -52,7 +52,6 @@
             tabPage1 = new TabPage();
             btnCheck = new Button();
             btnReset = new Button();
-            btnResult = new Button();
             btnStart = new Button();
             label7 = new Label();
             txtFail = new TextBox();
@@ -63,6 +62,8 @@
             label6 = new Label();
             txtTotal = new TextBox();
             tabPage2 = new TabPage();
+            label12 = new Label();
+            label11 = new Label();
             rbManual = new RadioButton();
             rbAuto = new RadioButton();
             nudHeight = new NumericUpDown();
@@ -78,8 +79,6 @@
             label2 = new Label();
             label9 = new Label();
             label1 = new Label();
-            label11 = new Label();
-            label12 = new Label();
             contextMenuStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage3.SuspendLayout();
@@ -269,7 +268,6 @@
             // 
             tabPage1.Controls.Add(btnCheck);
             tabPage1.Controls.Add(btnReset);
-            tabPage1.Controls.Add(btnResult);
             tabPage1.Controls.Add(btnStart);
             tabPage1.Controls.Add(label7);
             tabPage1.Controls.Add(txtFail);
@@ -306,16 +304,6 @@
             btnReset.Text = "초기화";
             btnReset.UseVisualStyleBackColor = true;
             btnReset.Click += btnReset_Click;
-            // 
-            // btnResult
-            // 
-            btnResult.Location = new Point(207, 122);
-            btnResult.Name = "btnResult";
-            btnResult.Size = new Size(89, 32);
-            btnResult.TabIndex = 19;
-            btnResult.Text = "결과 보기";
-            btnResult.UseVisualStyleBackColor = true;
-            btnResult.Click += btnResult_Click;
             // 
             // btnStart
             // 
@@ -425,6 +413,26 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "설정";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(25, 151);
+            label12.Name = "label12";
+            label12.Size = new Size(143, 15);
+            label12.TabIndex = 12;
+            label12.Text = "EX) G:\\사진\\1. 사진모음";
+            label12.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(23, 55);
+            label11.Name = "label11";
+            label11.Size = new Size(203, 15);
+            label11.TabIndex = 12;
+            label11.Text = "EX) G:\\사진\\3. 전자 액자 전용 사진";
+            label11.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // rbManual
             // 
@@ -582,26 +590,6 @@
             label1.Text = "■ 기준 해상도";
             label1.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Location = new Point(23, 55);
-            label11.Name = "label11";
-            label11.Size = new Size(360, 15);
-            label11.TabIndex = 12;
-            label11.Text = "EX) G:\\사진모음ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ";
-            label11.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(25, 151);
-            label12.Name = "label12";
-            label12.Size = new Size(360, 15);
-            label12.TabIndex = 12;
-            label12.Text = "EX) G:\\사진모음ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ";
-            label12.TextAlign = ContentAlignment.MiddleLeft;
-            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -654,7 +642,6 @@
         private TextBox txtSuccess;
         private ProgressBar progressBar1;
         private Button btnStart;
-        private Button btnResult;
         private Button btnReset;
         private TabPage tabPage3;
         private Button btnCheck;
