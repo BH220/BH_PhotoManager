@@ -41,6 +41,7 @@ namespace BH_PhotoFrame
         static bool isPlaying = true;
 
         static DateTime lastSlideTime = DateTime.Now;
+        static DateTime fadeStartTime;
 
         const float fadeDuration = 0.5f;
         const float slideDuration = 5f;
@@ -58,7 +59,12 @@ namespace BH_PhotoFrame
                 SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN
             );
 
-            renderer = SDL.SDL_CreateRenderer(window, -1, 0);
+            renderer = SDL.SDL_CreateRenderer(
+                window,
+                -1,
+                SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED |
+                SDL.SDL_RendererFlags.SDL_RENDERER_PRESENTVSYNC
+            );
 
             texture = SDL.SDL_CreateTexture(
                 renderer,
@@ -115,12 +121,13 @@ namespace BH_PhotoFrame
         static void StartFade()
         {
             isFading = true;
-            fadeProgress = 0f;
+            fadeStartTime = DateTime.Now;
         }
 
         static void FinishFade()
         {
             prevImage?.Dispose();
+            prevImage = null;
 
             prevImage = currentImage;
             currentImage = nextImage;
@@ -281,7 +288,8 @@ namespace BH_PhotoFrame
                     }
                     else
                     {
-                        fadeProgress += 1f / (fadeDuration * 60f);
+                        var elapsed = (DateTime.Now - fadeStartTime).TotalSeconds;
+                        fadeProgress = (float)(elapsed / fadeDuration);
 
                         if (fadeProgress >= 1f)
                         {
@@ -299,12 +307,21 @@ namespace BH_PhotoFrame
 
                     if (currentImage != null)
                     {
-                        float x = (width - currentImage.Width) / 2f;
-                        float y = (height - currentImage.Height) / 2f;
+                        float x1 = (width - currentImage.Width) / 2f;
+                        float y1 = (height - currentImage.Height) / 2f;
+
+                        float x2 = x1;
+                        float y2 = y1;
+
+                        if (nextImage != null)
+                        {
+                            x2 = (width - nextImage.Width) / 2f;
+                            y2 = (height - nextImage.Height) / 2f;
+                        }
 
                         if (!isFading)
                         {
-                            canvas.DrawBitmap(currentImage, x, y);
+                            canvas.DrawBitmap(currentImage, x1, y1);
                         }
                         else
                         {
@@ -318,10 +335,8 @@ namespace BH_PhotoFrame
                                 Color = SKColors.White.WithAlpha((byte)(255 * fadeProgress))
                             };
 
-                            canvas.DrawBitmap(currentImage, x, y, paintA);
-
-                            if (nextImage != null)
-                                canvas.DrawBitmap(nextImage, x, y, paintB);
+                            canvas.DrawBitmap(nextImage, x2, y2, paintB);
+                            canvas.DrawBitmap(currentImage, x1, y1, paintA);
                         }
 
                         DrawDate(canvas);
@@ -338,8 +353,6 @@ namespace BH_PhotoFrame
                 SDL.SDL_RenderClear(renderer);
                 SDL.SDL_RenderCopy(renderer, texture, IntPtr.Zero, IntPtr.Zero);
                 SDL.SDL_RenderPresent(renderer);
-
-                SDL.SDL_Delay(16);
             }
 
             handle.Free();
