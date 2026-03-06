@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using SDL2;
 using SkiaSharp;
 
@@ -68,7 +67,7 @@ namespace BH_PhotoFrame
 
             texture = SDL.SDL_CreateTexture(
                 renderer,
-                SDL.SDL_PIXELFORMAT_ABGR8888,
+                SDL.SDL_PIXELFORMAT_RGB888,//색이 이상할 때 여기서 확인해 봐야함
                 (int)SDL.SDL_TextureAccess.SDL_TEXTUREACCESS_STREAMING,
                 width,
                 height
@@ -80,7 +79,7 @@ namespace BH_PhotoFrame
                 PrepareImages();
 
             RunLoop();
-
+            
             SDL.SDL_DestroyTexture(texture);
             SDL.SDL_DestroyRenderer(renderer);
             SDL.SDL_DestroyWindow(window);
@@ -135,7 +134,6 @@ namespace BH_PhotoFrame
             photoIndex = (photoIndex + 1) % photoList.Count;
 
             int nextIndex = (photoIndex + 1) % photoList.Count;
-
             nextImage = LoadImage(photoList[nextIndex]);
 
             currentPath = photoList[photoIndex];
@@ -183,7 +181,6 @@ namespace BH_PhotoFrame
             photoIndex = (photoIndex + 1) % photoList.Count;
 
             int nextIndex = (photoIndex + 1) % photoList.Count;
-
             nextImage = LoadImage(photoList[nextIndex]);
 
             currentPath = photoList[photoIndex];
@@ -234,12 +231,7 @@ namespace BH_PhotoFrame
         {
             bool running = true;
 
-            SKImageInfo info = new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
-
-            byte[] pixelBuffer = new byte[width * height * 4];
-
-            var handle = GCHandle.Alloc(pixelBuffer, GCHandleType.Pinned);
-            IntPtr bufferPtr = handle.AddrOfPinnedObject();
+            SKImageInfo info = new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Unpremul);
 
             while (running)
             {
@@ -299,10 +291,11 @@ namespace BH_PhotoFrame
                     }
                 }
 
-                using (var surface = SKSurface.Create(info, bufferPtr, width * 4))
+                SDL.SDL_LockTexture(texture, IntPtr.Zero, out IntPtr pixels, out int pitch);
+
+                using (var surface = SKSurface.Create(info, pixels, pitch))
                 {
                     var canvas = surface.Canvas;
-
                     canvas.Clear(SKColors.Black);
 
                     if (currentImage != null)
@@ -343,19 +336,12 @@ namespace BH_PhotoFrame
                     }
                 }
 
-                IntPtr pixels;
-                int pitch;
-
-                SDL.SDL_LockTexture(texture, IntPtr.Zero, out pixels, out pitch);
-                Marshal.Copy(pixelBuffer, 0, pixels, pixelBuffer.Length);
                 SDL.SDL_UnlockTexture(texture);
 
                 SDL.SDL_RenderClear(renderer);
                 SDL.SDL_RenderCopy(renderer, texture, IntPtr.Zero, IntPtr.Zero);
                 SDL.SDL_RenderPresent(renderer);
             }
-
-            handle.Free();
         }
 
         static void DrawDate(SKCanvas canvas)
